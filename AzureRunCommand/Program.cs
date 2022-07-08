@@ -80,7 +80,7 @@ namespace AzureRunCommand
                 while (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
                     response = await client.GetAsync(uri);
-                    Thread.Sleep(1000);
+                    Thread.Sleep(2000);
                     Console.Write("*");
                 }
                 Console.WriteLine();
@@ -99,12 +99,12 @@ namespace AzureRunCommand
         {
             try
             {
-                Console.Write("Input command to run in Azure: ");
-                string? command = Console.ReadLine();
+                //Console.Write("Input command to run in Azure: ");
+                //string? command = Console.ReadLine();
 
                 await Azure.UpdateBearerToken();
 
-                string runCommandOutput = await Azure.RunCommand(command);
+                string runCommandOutput = await Azure.RunCommand(args[0]);
                 Console.WriteLine(runCommandOutput);
 
                 string commandOutput = await Azure.GetCommandOutput();
