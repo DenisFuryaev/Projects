@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/denisfuryaev/Documents/Programming/C#/AzureRunCommand/AzureRunCommand.csproj": {}
+    "/Users/denisfuryaev/Documents/Programming/C#/Projects/AzureRunCommand/AzureRunCommand.csproj": {}
   },
   "projects": {
-    "/Users/denisfuryaev/Documents/Programming/C#/AzureRunCommand/AzureRunCommand.csproj": {
+    "/Users/denisfuryaev/Documents/Programming/C#/Projects/AzureRunCommand/AzureRunCommand.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/denisfuryaev/Documents/Programming/C#/AzureRunCommand/AzureRunCommand.csproj",
+        "projectUniqueName": "/Users/denisfuryaev/Documents/Programming/C#/Projects/AzureRunCommand/AzureRunCommand.csproj",
         "projectName": "AzureRunCommand",
-        "projectPath": "/Users/denisfuryaev/Documents/Programming/C#/AzureRunCommand/AzureRunCommand.csproj",
+        "projectPath": "/Users/denisfuryaev/Documents/Programming/C#/Projects/AzureRunCommand/AzureRunCommand.csproj",
         "packagesPath": "/Users/denisfuryaev/.nuget/packages/",
-        "outputPath": "/Users/denisfuryaev/Documents/Programming/C#/AzureRunCommand/obj/",
+        "outputPath": "/Users/denisfuryaev/Documents/Programming/C#/Projects/AzureRunCommand/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/denisfuryaev/.nuget/NuGet/NuGet.Config"

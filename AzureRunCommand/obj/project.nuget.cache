@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ZsZyHMsJS/vkLlLSFaENLr3bXjYgpxGmx547PzBo3Xl9sJm3bpRCqkeknznDsQr6p22t5NeYH/IPCrYiCo9/BQ==",
+  "dgSpecHash": "TYvLkpVuFOyvOD9Mfxk0ciwlALwD7jT71mH8qrIVGBN9Qxsb6PYtyRXevxzEhn5E9lQbVGuUA2uOxGrvtz57YA==",
   "success": true,
-  "projectFilePath": "/Users/denisfuryaev/Documents/Programming/C#/AzureRunCommand/AzureRunCommand.csproj",
+  "projectFilePath": "/Users/denisfuryaev/Documents/Programming/C#/Projects/AzureRunCommand/AzureRunCommand.csproj",
   "expectedPackageFiles": [
     "/Users/denisfuryaev/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512"
   ],

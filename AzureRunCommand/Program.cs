@@ -16,7 +16,7 @@ namespace AzureRunCommand
         static string clientSecret = "YxA8Q~xhtFhMjxFftl6CLN8gYmdiAV~rVglTEchI";
         static string? location;
 
-        public static async void UpdateBearerToken()
+        public static async Task UpdateBearerToken()
         {
             string uri = $"https://login.microsoftonline.com/{tenantID}/oauth2/token";
 
@@ -42,7 +42,6 @@ namespace AzureRunCommand
 
             return;
         }
-
         public static async Task<string> RunCommand(string? command)
         {
            
@@ -67,7 +66,6 @@ namespace AzureRunCommand
 
             return response.ToString();
         }
-
         public static async Task<string> GetCommandOutput()
         {
             var uri = location;
@@ -86,7 +84,9 @@ namespace AzureRunCommand
                     Console.Write("*");
                 }
                 Console.WriteLine();
-                return await response.Content.ReadAsStringAsync();
+
+                string responseBody = await response.Content.ReadAsStringAsync();
+                return JObject.Parse(responseBody)["value"][0]["message"].ToString();
             }
 
             return response.StatusCode.ToString();
@@ -102,14 +102,12 @@ namespace AzureRunCommand
                 Console.Write("Input command to run in Azure: ");
                 string? command = Console.ReadLine();
 
-                Azure.UpdateBearerToken();
+                await Azure.UpdateBearerToken();
 
-                string runCommandResult = await Azure.RunCommand(command);
-                Console.WriteLine(runCommandResult);
+                string runCommandOutput = await Azure.RunCommand(command);
+                Console.WriteLine(runCommandOutput);
 
-                string getOutputResult = await Azure.GetCommandOutput();
-                JObject getOutputResultJson = JObject.Parse(getOutputResult);
-                string commandOutput = getOutputResultJson["value"][0]["message"].ToString();
+                string commandOutput = await Azure.GetCommandOutput();
                 Console.WriteLine(commandOutput);
             }
             catch(Exception e)
