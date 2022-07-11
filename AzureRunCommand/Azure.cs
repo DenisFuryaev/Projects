@@ -12,9 +12,20 @@ namespace AzureRunCommand
         public static void ReadAzureParameters(string filename)
         {
             AzureParametersFilename = filename;
-            StreamReader r = new StreamReader(AzureParametersFilename);
-            string jsonString = r.ReadToEnd();
-            azureParameters = JsonConvert.DeserializeObject<AzureParameters>(jsonString);
+            using(StreamReader r = new StreamReader(AzureParametersFilename))
+            {
+                string jsonString = r.ReadToEnd();
+                azureParameters = JsonConvert.DeserializeObject<AzureParameters>(jsonString);
+            }
+        }
+
+        public static void SaveAzureParameters()
+        {
+            using(StreamWriter w = new StreamWriter(AzureParametersFilename))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(w, azureParameters);
+            }
         }
 
         public static async Task UpdateBearerToken()

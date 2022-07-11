@@ -27,6 +27,8 @@ namespace AzureRunCommand
 
                 string commandOutput = await Azure.GetCommandOutput();
                 Console.WriteLine(commandOutput);
+                
+                Azure.SaveAzureParameters();
             }
             catch(Exception e)
             {
