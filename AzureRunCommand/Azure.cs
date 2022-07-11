@@ -55,11 +55,22 @@ namespace AzureRunCommand
             return;
         }
 
-        public static async Task<string> RunCommand(string? command)
+        public static async Task<string> RunCommand(string? commandID, string? scriptFilename = null)
         {
            
             var uri = $"https://management.azure.com/subscriptions/{azureParameters.subscriptionID}/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM/runCommand?api-version=2022-03-01";
-            var body = "{\"commandId\": \"" + command + "\"}"; 
+
+            string body, script;
+            if (scriptFilename != null)
+            {
+                using(StreamReader r = new StreamReader(scriptFilename))
+                {
+                    script = r.ReadToEnd();
+                }
+                body = "{\"commandId\": \"" + commandID + "\", \"script\": [ \"" + script + "\"]}"; 
+            }
+            else
+                body = "{\"commandId\": \"" + commandID + "\"}"; 
 
             var data = new StringContent(body, Encoding.UTF8, "application/json");
             using var client = new HttpClient();
