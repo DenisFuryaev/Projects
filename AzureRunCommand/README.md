@@ -2,4 +2,4 @@
 
 *usage:*  .exe "command-name" [-s "script-filename"] [-p "azure-parameters-filename"]
 
-![Screenshot 2022-07-08 at 13 11 05](https://user-images.githubusercontent.com/65111871/177959182-db47501e-7c45-4933-a2ea-24844c75cf77.png)
+![Screenshot 2022-07-11 at 14 49 11](https://user-images.githubusercontent.com/65111871/178248352-916dc2ba-ca08-4b5b-be7c-51bfa0ff095a.png)
