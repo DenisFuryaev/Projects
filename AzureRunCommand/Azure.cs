@@ -1,31 +1,29 @@
 using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace AzureRunCommand
 {
     public class Azure
     {
         static AzureParameters azureParameters;
-        static string AzureParametersFilename;
+        static string azureParametersFilename;
+        static Body body = new Body();
 
         public static void ReadAzureParameters(string filename)
         {
-            AzureParametersFilename = filename;
-            using(StreamReader r = new StreamReader(AzureParametersFilename))
+            azureParametersFilename = filename;
+            using(StreamReader r = new StreamReader(azureParametersFilename))
             {
                 string jsonString = r.ReadToEnd();
-                azureParameters = JsonConvert.DeserializeObject<AzureParameters>(jsonString);
+                azureParameters = JsonSerializer.Deserialize<AzureParameters>(jsonString);
             }
         }
 
         public static void SaveAzureParameters()
         {
-            using(StreamWriter w = new StreamWriter(AzureParametersFilename))
-            {
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(w, azureParameters);
-            }
+            string jsonString = JsonSerializer.Serialize(azureParameters);
+            File.WriteAllText(azureParametersFilename, jsonString);
         }
 
         public static async Task UpdateBearerToken()
@@ -46,7 +44,7 @@ namespace AzureRunCommand
             if (response.IsSuccessStatusCode)
             {
                 var responseBody = await response.Content.ReadAsStringAsync();
-                JObject responseBodyJson = JObject.Parse(responseBody);
+                JsonNode responseBodyJson = JsonObject.Parse(responseBody);
                 string bearerToken = responseBodyJson["access_token"].ToString();
                 azureParameters.bearer = bearerToken; 
                 return;
@@ -55,26 +53,29 @@ namespace AzureRunCommand
             return;
         }
 
+        #nullable enable
         public static async Task<string> RunCommand(string? commandID, string? scriptFilename = null)
         {
            
             var uri = $"https://management.azure.com/subscriptions/{azureParameters.subscriptionID}/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM/runCommand?api-version=2022-03-01";
 
-            string body, script;
+            string script, bodyJson;
+
+            body.commandId = commandID;
             if (scriptFilename != null)
             {
                 using(StreamReader r = new StreamReader(scriptFilename))
                 {
                     script = r.ReadToEnd();
                 }
-                body = "{\"commandId\": \"" + commandID + "\", \"script\": [ \"" + script + "\"]}"; 
+                body.script = new string[] {script};
             }
-            else
-                body = "{\"commandId\": \"" + commandID + "\"}"; 
+            bodyJson = JsonSerializer.Serialize(body);
 
-            var data = new StringContent(body, Encoding.UTF8, "application/json");
+            var data = new StringContent(bodyJson, Encoding.UTF8, "application/json");
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + azureParameters.bearer);
+
             var response = await client.PostAsync(uri, data);
 
             IEnumerable<string>? values;
@@ -90,28 +91,31 @@ namespace AzureRunCommand
 
             return response.ToString();
         }
-        
+        #nullable disable
+
         public static async Task<string> GetCommandOutput()
         {
             var uri = azureParameters.location;
 
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + azureParameters.bearer);
-            var response = await client.GetAsync(uri);
 
+            var response = await client.GetAsync(uri);
             if (response.IsSuccessStatusCode)
             {
                 Console.WriteLine("Please wait for your command to finish execution in Azure");
                 while (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
                     response = await client.GetAsync(uri);
-                    Thread.Sleep(2000);
+                    await Task.Delay(4000);
                     Console.Write("*");
                 }
                 Console.WriteLine();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
-                return JObject.Parse(responseBody)["value"][0]["message"].ToString();
+                var jsonDocument = JsonDocument.Parse(responseBody);
+                string message = jsonDocument.RootElement.GetProperty("value")[0].GetProperty("message").ToString();
+                return message;
             }
 
             return response.StatusCode.ToString();
