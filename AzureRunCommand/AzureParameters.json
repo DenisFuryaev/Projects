@@ -1,9 +1,9 @@
 {
     "subscriptionID": "9d49597d-c13e-40f9-b716-e9a16661e8e4",
     "tenantID": "cedbfdbf-3892-4452-9480-04de054ba204",
-    "clientID": "e7072e75-0219-4f97-a218-b5efcb2ee4a5",
-    "clientSecret": "YxA8Q~xhtFhMjxFftl6CLN8gYmdiAV~rVglTEchI",
+    "clientID": "e71a96b9-ff04-4367-93dd-01827236c9ae",
+    "clientSecret": "TPZ8Q~iUEmExyQQGpGXcw.kSrVyJxuYCQS1yzcZ4",
     "resource": "https://management.azure.com",
-    "location": "https://management.azure.com/subscriptions/9d49597d-c13e-40f9-b716-e9a16661e8e4/providers/Microsoft.Compute/locations/ukwest/operations/86e1ad3f-e002-4d16-8d66-2a9e253270d3?p=b0fe5a15-ce31-472d-87cf-73c031b7fd46&monitor=true&api-version=2022-03-01",
+    "location": "",
     "bearer": ""
 }

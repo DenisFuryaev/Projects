@@ -13,11 +13,8 @@ namespace AzureRunCommand
         public static void ReadAzureParameters(string filename)
         {
             azureParametersFilename = filename;
-            using(StreamReader r = new StreamReader(azureParametersFilename))
-            {
-                string jsonString = r.ReadToEnd();
-                azureParameters = JsonSerializer.Deserialize<AzureParameters>(jsonString);
-            }
+            string jsonString = File.ReadAllText(filename);
+            azureParameters = JsonSerializer.Deserialize<AzureParameters>(jsonString);
         }
 
         public static void SaveAzureParameters()
@@ -47,7 +44,6 @@ namespace AzureRunCommand
                 JsonNode responseBodyJson = JsonObject.Parse(responseBody);
                 string bearerToken = responseBodyJson["access_token"].ToString();
                 azureParameters.bearer = bearerToken; 
-                return;
             }
 
             return;
@@ -89,7 +85,7 @@ namespace AzureRunCommand
                 return await response.Content.ReadAsStringAsync();
             }
 
-            return response.ToString();
+            throw new Exception(response.ReasonPhrase);
         }
         #nullable disable
 
@@ -118,7 +114,7 @@ namespace AzureRunCommand
                 return message;
             }
 
-            return response.StatusCode.ToString();
+            throw new Exception(response.ReasonPhrase);
         }
     }
 }

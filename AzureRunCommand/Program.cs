@@ -19,11 +19,10 @@ namespace AzureRunCommand
                 Stopwatch stopwatch = new Stopwatch();
 
                 paramsDict.Add("commandID", args[0]);
-
                 paramsDict.Add("-p", "AzureParameters.json");
+
                 if (args.Length == 3)
                 {
-                    
                     paramsDict[args[1]] = args[2];
                 }
                 else if (args.Length == 5)
