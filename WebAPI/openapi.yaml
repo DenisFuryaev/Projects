@@ -19,7 +19,7 @@ security:
 paths:
   /ipconfig:
     post:
-      description: Returns the result of IPConfig powershell command on Azure VM
+      summary: Returns the result of IPConfig powershell command on Azure VM
       responses:
         '200':
           description: Successfully returned result of IPConfig command
@@ -35,7 +35,7 @@ paths:
 
   /runpowershellscript:
     post:
-      description: Returns the result of RunPowerShellScript command on Azure VM
+      summary: Returns the result of RunPowerShellScript command on Azure VM
       requestBody:
         required: true
         content:
