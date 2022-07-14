@@ -1,0 +1,59 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: AzureWebAPI
+  description: WebAPI for running commands in Azure
+
+servers:
+  - url: https://localhost
+
+# Basic authentication
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+security:
+  - BasicAuth: []
+
+paths:
+  /ipconfig:
+    post:
+      description: Returns the result of IPConfig powershell command on Azure VM
+      responses:
+        '200':
+          description: Successfully returned result of IPConfig command
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad request. No such powershell command found
+        '401':
+          description: Authorization information is missing or invalid.
+
+
+  /runpowershellscript:
+    post:
+      description: Returns the result of RunPowerShellScript command on Azure VM
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                script:
+                  type: string
+
+      responses:
+        '200':
+          description: Successfully returned output of specified powershell script
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad request. Invalid powershell script 
+        '401':
+          description: Authorization information is missing or invalid.
