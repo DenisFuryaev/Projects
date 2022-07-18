@@ -33,5 +33,6 @@ internal class Program
         await Azure.UpdateBearerToken();
 
         app.Run();
+
     }
 }

@@ -10,12 +10,21 @@ public class IPConfigController : ControllerBase
 
     }
 
-    [HttpPost]
+    [HttpGet]
     public async Task<IActionResult> RunCommand()
     {
-        string runCommandOutput = await Azure.RunCommand("IPConfig");
+        string runCommandOutput, commandOutput;
+        try
+        {
+            runCommandOutput = await Azure.RunCommand("IPConfig");
 
-        string commandOutput = await Azure.GetCommandOutput();
+            commandOutput = await Azure.GetCommandOutput();
+        }
+        catch(Exception e)
+        {
+            return Conflict(e.Message);
+        }
+
         return Ok(commandOutput);
     }
 }

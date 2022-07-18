@@ -1,6 +1,6 @@
 namespace AzureWebAPI.Models
 {
-    class AzureParameters
+    public class AzureParameters
     {
         public string subscriptionID {get; set;}
         public string tenantID {get; set;}

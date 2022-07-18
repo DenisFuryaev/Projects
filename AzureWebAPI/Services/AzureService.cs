@@ -13,7 +13,6 @@ namespace AzureWebAPI.Services
 
         public static void ReadAzureParameters(string filename)
         {
-            Console.WriteLine(filename);
             azureParametersFilename = filename;
             string jsonString = File.ReadAllText(filename);
             azureParameters = JsonSerializer.Deserialize<AzureParameters>(jsonString);
@@ -52,22 +51,17 @@ namespace AzureWebAPI.Services
         }
 
         #nullable enable
-        public static async Task<string> RunCommand(string? commandID, string? scriptFilename = null)
+        public static async Task<string> RunCommand(string? commandID, ScriptBody? scriptBody = null)
         {
            
             var uri = $"https://management.azure.com/subscriptions/{azureParameters.subscriptionID}/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM/runCommand?api-version=2022-03-01";
 
-            string script, bodyJson;
+            string bodyJson;
 
             body.commandId = commandID;
-            if (scriptFilename != null)
-            {
-                using(StreamReader r = new StreamReader(scriptFilename))
-                {
-                    script = r.ReadToEnd();
-                }
-                body.script = new string[] {script};
-            }
+            if (scriptBody != null)
+                body.script = new string[] {scriptBody.script};
+
             bodyJson = JsonSerializer.Serialize(body);
 
             var data = new StringContent(bodyJson, Encoding.UTF8, "application/json");
@@ -104,7 +98,7 @@ namespace AzureWebAPI.Services
                 while (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
                     response = await client.GetAsync(uri);
-                    await Task.Delay(10000);
+                    await Task.Delay(5000);
                 }
                 Console.WriteLine();
 
