@@ -1,6 +1,6 @@
 namespace AzureWebAPI.Models
 {
-    public class AuthorizationTokens
+    public class ClientCredentials
     {
         public string clientID {get; set;}
         public string clientSecret {get; set;}

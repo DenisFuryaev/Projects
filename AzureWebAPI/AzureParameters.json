@@ -4,6 +4,6 @@
     "clientID": "",
     "clientSecret": "",
     "resource": "https://management.azure.com",
-    "location": "",
-    "bearer": ""
+    "bearer": "",
+    "location": ""
 }
