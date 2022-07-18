@@ -1,0 +1,19 @@
+using Microsoft.AspNetCore.Mvc;
+
+namespace AzureWebAPI.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class RunPowerShellCommandController : ControllerBase
+{
+    public RunPowerShellCommandController()
+    {
+
+    }
+
+    [HttpPost]
+    public IActionResult RunCommand()
+    {
+        return Ok();
+    }
+}
