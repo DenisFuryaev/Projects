@@ -11,6 +11,12 @@ namespace AzureWebAPI.Services
         static string azureParametersFilename;
         static RequestBody body = new RequestBody();
 
+        public static void ReadClientCredentials(ClientCredentials clientCredentials)
+        {
+            azureParameters.clientID = clientCredentials.clientID;
+            azureParameters.clientSecret = clientCredentials.clientSecret;
+        }
+
         public static void ReadAzureParameters(string filename)
         {
             azureParametersFilename = filename;
@@ -45,6 +51,10 @@ namespace AzureWebAPI.Services
                 JsonNode responseBodyJson = JsonObject.Parse(responseBody);
                 string bearerToken = responseBodyJson["access_token"].ToString();
                 azureParameters.bearer = bearerToken; 
+            }
+            else
+            {
+                throw new Exception(response.ReasonPhrase);
             }
 
             return;

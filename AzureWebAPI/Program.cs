@@ -28,11 +28,6 @@ internal class Program
 
         app.MapControllers();
 
-        // Initialize Azure Parameters
-        Azure.ReadAzureParameters("AzureParameters.json");
-        await Azure.UpdateBearerToken();
-
         app.Run();
-
     }
 }
