@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace AzureWebAPI.Controllers;
-
 [ApiController]
 [Route("[controller]")]
 public class IPConfigController : ControllerBase

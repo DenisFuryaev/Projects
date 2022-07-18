@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-
-namespace AzureWebAPI.Controllers;
+using AzureWebAPI.Models;
 
 [ApiController]
 [Route("[controller]")]
@@ -12,7 +11,7 @@ public class RunPowerShellCommandController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult RunCommand()
+    public IActionResult RunCommand(ScriptBody scriptBody)
     {
         return Ok();
     }
