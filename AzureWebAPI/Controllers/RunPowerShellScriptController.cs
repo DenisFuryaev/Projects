@@ -23,7 +23,7 @@ public class RunPowerShellScriptController : ControllerBase
         }
         catch(Exception e)
         {
-            return Conflict(e.Message);
+            return BadRequest(e.Message);
         }
 
         return Ok(commandOutput);

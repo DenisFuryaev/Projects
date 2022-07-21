@@ -2,7 +2,7 @@ namespace AzureWebAPI.Models
 {
     class RequestBody
     {
-        public string commandId {get; set;}
-        public string[] script {get; set;}
+        public string CommandId {get; set;}
+        public string[] Script {get; set;}
     }
 }

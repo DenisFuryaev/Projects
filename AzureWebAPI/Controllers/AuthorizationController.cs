@@ -17,12 +17,12 @@ public class AuthorizationController : ControllerBase
     {
         try
         {
-            Azure.ReadAzureParameters("AzureParameters.json");
+            await Azure.ReadAzureParameters("AzureParameters.json");
 
             // Client credentials:
             // {
-            //    "clientID": "e71a96b9-ff04-4367-93dd-01827236c9ae",
-            //    "clientSecret": "TPZ8Q~iUEmExyQQGpGXcw.kSrVyJxuYCQS1yzcZ4"
+            //    "ClientID": "e71a96b9-ff04-4367-93dd-01827236c9ae",
+            //    "ClientSecret": "TPZ8Q~iUEmExyQQGpGXcw.kSrVyJxuYCQS1yzcZ4"
             // }
             Azure.ReadClientCredentials(clientCredentials);
 
@@ -30,7 +30,7 @@ public class AuthorizationController : ControllerBase
         }
         catch (Exception e)
         {
-            return Conflict(e.Message);
+            return Unauthorized(e.Message);
         }
 
         return Ok();

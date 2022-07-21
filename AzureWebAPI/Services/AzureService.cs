@@ -7,39 +7,39 @@ namespace AzureWebAPI.Services
 {
     public class Azure
     {
-        static AzureParameters azureParameters;
-        static string azureParametersFilename;
+        static AzureParameters _azureParameters;
+        static string _azureParametersFilename;
         static RequestBody body = new RequestBody();
 
         public static void ReadClientCredentials(ClientCredentials clientCredentials)
         {
-            azureParameters.clientID = clientCredentials.clientID;
-            azureParameters.clientSecret = clientCredentials.clientSecret;
+            _azureParameters.ClientID = clientCredentials.ClientID;
+            _azureParameters.ClientSecret = clientCredentials.ClientSecret;
         }
 
-        public static void ReadAzureParameters(string filename)
+        public static async Task ReadAzureParameters(string filename)
         {
-            azureParametersFilename = filename;
-            string jsonString = File.ReadAllText(filename);
-            azureParameters = JsonSerializer.Deserialize<AzureParameters>(jsonString);
+            _azureParametersFilename = filename;
+            FileStream fileStream = File.Open(filename, FileMode.Open);
+            _azureParameters = await JsonSerializer.DeserializeAsync<AzureParameters>(fileStream);
         }
 
-        public static void SaveAzureParameters()
+        public static async Task SaveAzureParameters()
         {
-            string jsonString = JsonSerializer.Serialize(azureParameters);
-            File.WriteAllText(azureParametersFilename, jsonString);
+            FileStream fileStream = File.Open(_azureParametersFilename, FileMode.Create);
+            await JsonSerializer.SerializeAsync(fileStream, _azureParameters, _azureParameters.GetType());
         }
 
         public static async Task UpdateBearerToken()
         {
-            string uri = $"https://login.microsoftonline.com/{azureParameters.tenantID}/oauth2/token";
+            string uri = $"https://login.microsoftonline.com/{_azureParameters.TenantID}/oauth2/token";
 
             var data = new[]
             {
                 new KeyValuePair<string, string>("grant_type", "client_credentials"),
-                new KeyValuePair<string, string>("client_id", azureParameters.clientID),
-                new KeyValuePair<string, string>("client_secret", azureParameters.clientSecret),
-                new KeyValuePair<string, string>("resource", azureParameters.resource)
+                new KeyValuePair<string, string>("client_id", _azureParameters.ClientID),
+                new KeyValuePair<string, string>("client_secret", _azureParameters.ClientSecret),
+                new KeyValuePair<string, string>("resource", _azureParameters.Resource)
             };
 
             using var client = new HttpClient();
@@ -50,7 +50,7 @@ namespace AzureWebAPI.Services
                 var responseBody = await response.Content.ReadAsStringAsync();
                 JsonNode responseBodyJson = JsonObject.Parse(responseBody);
                 string bearerToken = responseBodyJson["access_token"].ToString();
-                azureParameters.bearer = bearerToken; 
+                _azureParameters.Bearer = bearerToken; 
             }
             else
             {
@@ -64,26 +64,26 @@ namespace AzureWebAPI.Services
         public static async Task<string> RunCommand(string? commandID, ScriptBody? scriptBody = null)
         {
            
-            var uri = $"https://management.azure.com/subscriptions/{azureParameters.subscriptionID}/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM/runCommand?api-version=2022-03-01";
+            var uri = $"https://management.azure.com/subscriptions/{_azureParameters.SubscriptionID}/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM/runCommand?api-version=2022-03-01";
 
             string bodyJson;
 
-            body.commandId = commandID;
+            body.CommandId = commandID;
             if (scriptBody != null)
-                body.script = new string[] {scriptBody.script};
+                body.Script = new string[] {scriptBody.Script};
 
             bodyJson = JsonSerializer.Serialize(body);
 
             var data = new StringContent(bodyJson, Encoding.UTF8, "application/json");
             using var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + azureParameters.bearer);
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _azureParameters.Bearer);
 
             var response = await client.PostAsync(uri, data);
 
             IEnumerable<string>? values;
             if (response.Headers.TryGetValues("Location", out values))
             {
-                azureParameters.location = values.First();
+                _azureParameters.Location = values.First();
             }
 
             if (response.IsSuccessStatusCode)
@@ -97,10 +97,10 @@ namespace AzureWebAPI.Services
 
         public static async Task<string> GetCommandOutput()
         {
-            var uri = azureParameters.location;
+            var uri = _azureParameters.Location;
 
             using var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + azureParameters.bearer);
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _azureParameters.Bearer);
 
             var response = await client.GetAsync(uri);
             if (response.IsSuccessStatusCode)

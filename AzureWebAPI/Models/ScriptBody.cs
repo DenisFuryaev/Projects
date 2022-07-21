@@ -2,5 +2,5 @@ namespace AzureWebAPI.Models;
 
 public class ScriptBody
 {
-    public string script {get; set;}
+    public string Script {get; set;}
 }

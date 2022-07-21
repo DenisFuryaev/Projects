@@ -2,7 +2,7 @@ namespace AzureWebAPI.Models
 {
     public class ClientCredentials
     {
-        public string clientID {get; set;}
-        public string clientSecret {get; set;}
+        public string ClientID {get; set;}
+        public string ClientSecret {get; set;}
     }
 }

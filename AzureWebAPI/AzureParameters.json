@@ -1,9 +1,9 @@
 {
-    "subscriptionID": "9d49597d-c13e-40f9-b716-e9a16661e8e4",
-    "tenantID": "cedbfdbf-3892-4452-9480-04de054ba204",
-    "clientID": "",
-    "clientSecret": "",
-    "resource": "https://management.azure.com",
-    "bearer": "",
-    "location": ""
+    "SubscriptionID": "9d49597d-c13e-40f9-b716-e9a16661e8e4",
+    "TenantID": "cedbfdbf-3892-4452-9480-04de054ba204",
+    "ClientID": "",
+    "ClientSecret": "",
+    "Resource": "https://management.azure.com",
+    "Bearer": "",
+    "Location": ""
 }
