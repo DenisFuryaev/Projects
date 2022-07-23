@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using AzureWebAPI.Services;
 
 [ApiController]
 [Route("[controller]")]
@@ -9,9 +10,21 @@ public class IPConfigController : ControllerBase
 
     }
 
-    [HttpPost]
-    public IActionResult RunCommand()
+    [HttpGet]
+    public async Task<IActionResult> RunCommand()
     {
-        return Ok();
+        string runCommandOutput, commandOutput;
+        try
+        {
+            runCommandOutput = await Azure.RunCommand("IPConfig");
+
+            commandOutput = await Azure.GetCommandOutput();
+        }
+        catch(Exception e)
+        {
+            return Conflict(e.Message);
+        }
+
+        return Ok(commandOutput);
     }
 }
