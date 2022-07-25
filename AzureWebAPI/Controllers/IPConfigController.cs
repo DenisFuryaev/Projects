@@ -5,9 +5,11 @@ using AzureWebAPI.Services;
 [Route("[controller]")]
 public class IPConfigController : ControllerBase
 {
-    public IPConfigController()
-    {
+    private ILogger<IPConfigController> _logger;
 
+    public IPConfigController(ILogger<IPConfigController> logger)
+    {
+        _logger = logger;
     }
 
     [HttpGet]
@@ -18,13 +20,17 @@ public class IPConfigController : ControllerBase
         {
             runCommandOutput = await Azure.RunCommand("IPConfig");
 
+            _logger.LogInformation("IPConfig command initiated succesfully at {DT}", DateTime.UtcNow.ToLocalTime().ToLongTimeString());
+
             commandOutput = await Azure.GetCommandOutput();
         }
         catch(Exception e)
         {
+            _logger.LogError("IPConfig command error occured at {DT}", DateTime.UtcNow.ToLocalTime().ToLongTimeString());
             return Conflict(e.Message);
         }
 
+        _logger.LogInformation("IPConfig command completed succesfully at {DT}", DateTime.UtcNow.ToLocalTime().ToLongTimeString());
         return Ok(commandOutput);
     }
 }

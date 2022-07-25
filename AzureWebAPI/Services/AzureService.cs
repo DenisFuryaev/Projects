@@ -9,7 +9,7 @@ namespace AzureWebAPI.Services
     {
         static AzureParameters _azureParameters;
         static string _azureParametersFilename;
-        static RequestBody body = new RequestBody();
+        static RequestBody _body = new RequestBody();
 
         public static void ReadClientCredentials(ClientCredentials clientCredentials)
         {
@@ -68,11 +68,11 @@ namespace AzureWebAPI.Services
 
             string bodyJson;
 
-            body.CommandId = commandID;
+            _body.CommandId = commandID;
             if (scriptBody != null)
-                body.Script = new string[] {scriptBody.Script};
+                _body.Script = new string[] {scriptBody.Script};
 
-            bodyJson = JsonSerializer.Serialize(body);
+            bodyJson = JsonSerializer.Serialize(_body);
 
             var data = new StringContent(bodyJson, Encoding.UTF8, "application/json");
             using var client = new HttpClient();
