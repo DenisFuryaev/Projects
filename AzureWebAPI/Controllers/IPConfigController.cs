@@ -26,7 +26,7 @@ public class IPConfigController : ControllerBase
         }
         catch(Exception e)
         {
-            _logger.LogError("IPConfig command error occured at {DT}", DateTime.UtcNow.ToLocalTime().ToLongTimeString());
+            _logger.LogWarning(e, "IPConfig command error occured at {DT}", DateTime.UtcNow.ToLocalTime().ToLongTimeString());
             return Conflict(e.Message);
         }
 

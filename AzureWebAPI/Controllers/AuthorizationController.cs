@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using AzureWebAPI.Services;
 using AzureWebAPI.Models;
-using System;
 
 [ApiController]
 [Route("[controller]")]
@@ -32,7 +31,7 @@ public class AuthorizationController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogError("Authorization error occured at {DT}", DateTime.UtcNow.ToLocalTime().ToLongTimeString());
+            _logger.LogWarning(e, "Authorization error occured at {DT}", DateTime.UtcNow.ToLocalTime().ToLongTimeString());
             return Unauthorized(e.Message);
         }
 

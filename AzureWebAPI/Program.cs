@@ -1,4 +1,3 @@
-using AzureWebAPI.Services;
 
 internal class Program
 {
@@ -11,8 +10,14 @@ internal class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Logging.ClearProviders();
-        builder.Logging.AddConsole();
+
+        builder.Host.ConfigureLogging(logging =>
+        {
+            logging.ClearProviders();
+            logging.AddConsole();
+            logging.AddDebug();
+        }); 
+
 
         var app = builder.Build();
 

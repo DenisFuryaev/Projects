@@ -27,7 +27,7 @@ public class RunPowerShellScriptController : ControllerBase
         }
         catch(Exception e)
         {
-            _logger.LogError("RunPowerShellScript command error occured at {DT}", DateTime.UtcNow.ToLocalTime().ToLongTimeString());            
+            _logger.LogWarning(e, "RunPowerShellScript command error occured at {DT}", DateTime.UtcNow.ToLocalTime().ToLongTimeString());            
             return BadRequest(e.Message);
         }
 
