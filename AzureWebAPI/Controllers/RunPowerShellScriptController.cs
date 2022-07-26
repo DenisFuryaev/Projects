@@ -21,17 +21,17 @@ public class RunPowerShellScriptController : ControllerBase
         {
             runCommandOutput = await Azure.RunCommand("RunPowerShellScript", scriptBody);
 
-            _logger.LogInformation("RunPowerShellScript command initiated succesfully at {DT}", DateTime.UtcNow.ToLocalTime().ToLongTimeString());
+            _logger.LogInformation("RunPowerShellScript command initiated succesfully");
 
             commandOutput = await Azure.GetCommandOutput();
         }
         catch(Exception e)
         {
-            _logger.LogWarning(e, "RunPowerShellScript command error occured at {DT}", DateTime.UtcNow.ToLocalTime().ToLongTimeString());            
+            _logger.LogWarning(e, "RunPowerShellScript command error occured");            
             return BadRequest(e.Message);
         }
 
-        _logger.LogInformation("RunPowerShellScript command completed succesfully at {DT}", DateTime.UtcNow.ToLocalTime().ToLongTimeString());
+        _logger.LogInformation("RunPowerShellScript command completed succesfully");
         return Ok(commandOutput);
     }
 }

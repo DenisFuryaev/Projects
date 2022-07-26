@@ -31,11 +31,11 @@ public class AuthorizationController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogWarning(e, "Authorization error occured at {DT}", DateTime.UtcNow.ToLocalTime().ToLongTimeString());
+            _logger.LogWarning(e, "Authorization error");
             return Unauthorized(e.Message);
         }
 
-        _logger.LogInformation("Authorization completed succesfully at {DT}", DateTime.UtcNow.ToLocalTime().ToLongTimeString());
+        _logger.LogInformation("Authorization completed succesfully");
         return Ok();
     }
 }
