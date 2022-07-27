@@ -6,10 +6,11 @@ using AzureWebAPI.Models;
 [Route("[controller]")]
 public class AuthorizationController : ControllerBase
 {
+    private ILogger<AuthorizationController> _logger;
 
-    public AuthorizationController()
+    public AuthorizationController(ILogger<AuthorizationController> logger)
     {
-
+        _logger = logger;
     }
 
     [HttpPost]
@@ -30,9 +31,11 @@ public class AuthorizationController : ControllerBase
         }
         catch (Exception e)
         {
+            _logger.LogWarning(e, "Authorization error");
             return Unauthorized(e.Message);
         }
 
+        _logger.LogInformation("Authorization completed succesfully");
         return Ok();
     }
 }
